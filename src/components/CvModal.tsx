@@ -150,6 +150,14 @@ ${cvData.languages.join(', ')}
                     <img
                       src={photoUrl}
                       alt={cvData.name}
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.dataset.fallbackTried) {
+                          target.dataset.fallbackTried = 'true';
+                          target.src = './profile.jpg';
+                        }
+                      }}
                       className="w-full h-full object-cover rounded-[50%]"
                     />
                   </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   Calendar,
   Warehouse,
@@ -71,11 +72,39 @@ export const ProfileSection: React.FC = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: 'easeOut',
+      },
+    },
+  };
+
   return (
     <section id="profile" className="py-16 sm:py-20 bg-white border-b border-[#e2ebe5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl">
+        <motion.div
+          className="max-w-3xl"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#205c3b] uppercase">
             <span className="w-6 h-0.5 bg-[#205c3b]"></span>
             <span>Candidate Overview</span>
@@ -88,36 +117,52 @@ export const ProfileSection: React.FC = () => {
             inventory control, and timely regional distribution. Proven capability to manage fast-paced
             receiving, fresh perishables handling, team leadership, and fleet dispatch across Qatar.
           </p>
-        </div>
+        </motion.div>
 
         {/* Structured Profile Cards Grid */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-50px' }}
+        >
           {profileCards.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div
+              <motion.div
                 key={idx}
+                variants={cardVariants}
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
                 id={`profile-card-${idx}`}
-                className="bg-[#f7faf8] rounded-lg p-6 border border-[#dbe5df] hover:border-[#205c3b] transition-all hover:bg-white flex flex-col justify-between"
+                className="group bg-[#f7faf8] rounded-lg p-6 border border-[#dbe5df] hover:border-[#205c3b] hover:shadow-md transition-all hover:bg-white flex flex-col justify-between cursor-default"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-md bg-[#ebf3ed] border border-[#d2e2d7] flex items-center justify-center text-[#143d2b] mb-4">
+                  <div className="w-10 h-10 rounded-md bg-[#ebf3ed] border border-[#d2e2d7] group-hover:border-[#205c3b] flex items-center justify-center text-[#143d2b] mb-4 transition-transform duration-200 group-hover:scale-110">
                     <Icon className="w-5 h-5 text-[#205c3b]" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#143d2b] tracking-tight">{item.title}</h3>
+                  <h3 className="text-lg font-bold text-[#143d2b] tracking-tight group-hover:text-[#205c3b] transition-colors">
+                    {item.title}
+                  </h3>
                   <p className="mt-2 text-sm text-[#3f4e44] leading-relaxed">{item.detail}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-[#e8efe9] flex items-center text-xs font-semibold text-[#205c3b]">
                   <CheckCircle className="w-3.5 h-3.5 mr-1.5" />
                   <span>Verified in CV Experience</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Driving License & Geographic Anchor Banner */}
-        <div className="mt-10 bg-[#ebf3ed] border border-[#c8dcd0] rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <motion.div
+          className="mt-10 bg-[#ebf3ed] border border-[#c8dcd0] rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <div className="max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-[#205c3b]">
               Verified Qualification
@@ -132,16 +177,22 @@ export const ProfileSection: React.FC = () => {
             </p>
           </div>
           <div className="shrink-0 flex items-center gap-3">
-            <div className="px-4 py-3 bg-white border border-[#b8d1c1] rounded-md text-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-3 bg-white border border-[#b8d1c1] rounded-md text-center shadow-2xs"
+            >
               <span className="block text-xs uppercase font-medium text-[#52796f]">License Type</span>
               <span className="text-sm font-bold text-[#143d2b]">Qatar Light (Manual)</span>
-            </div>
-            <div className="px-4 py-3 bg-white border border-[#b8d1c1] rounded-md text-center">
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-3 bg-white border border-[#b8d1c1] rounded-md text-center shadow-2xs"
+            >
               <span className="block text-xs uppercase font-medium text-[#52796f]">Location</span>
               <span className="text-sm font-bold text-[#143d2b]">Abu Hamour, Doha</span>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

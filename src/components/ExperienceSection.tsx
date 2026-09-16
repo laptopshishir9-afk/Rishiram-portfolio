@@ -1,13 +1,20 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { Calendar, MapPin, Building2, Check, ArrowRight } from 'lucide-react';
 import { cvData } from '../data/cvData';
 
 export const ExperienceSection: React.FC = () => {
   return (
-    <section id="experience" className="py-16 sm:py-20 bg-white border-b border-[#e2ebe5]">
+    <section id="experience" className="py-16 sm:py-20 bg-white border-b border-[#e2ebe5] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="max-w-3xl">
+        <motion.div
+          className="max-w-3xl"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#205c3b] uppercase">
             <span className="w-6 h-0.5 bg-[#205c3b]"></span>
             <span>Career History</span>
@@ -19,7 +26,7 @@ export const ExperienceSection: React.FC = () => {
             15+ continuous years of operational excellence in Qatar across warehouse supervision, fresh food
             logistics, distribution dispatch, and merchandise management.
           </p>
-        </div>
+        </motion.div>
 
         {/* Vertical Timeline */}
         <div className="mt-14 relative">
@@ -31,10 +38,14 @@ export const ExperienceSection: React.FC = () => {
 
           <div className="space-y-12 sm:space-y-14">
             {cvData.experiences.map((exp, index) => (
-              <div
+              <motion.div
                 key={index}
                 id={`experience-entry-${index}`}
                 className="relative pl-12 sm:pl-20 group"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 {/* Timeline node */}
                 <div
@@ -44,10 +55,21 @@ export const ExperienceSection: React.FC = () => {
                       : 'bg-white border-[#205c3b] group-hover:bg-[#205c3b]'
                   }`}
                   aria-hidden="true"
-                ></div>
+                >
+                  {exp.isCurrent && (
+                    <motion.span
+                      className="absolute -inset-1 rounded-full bg-[#205c3b]"
+                      animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                    />
+                  )}
+                </div>
 
                 {/* Experience Card */}
-                <div className="bg-[#f7faf8] border border-[#dbe5df] group-hover:border-[#205c3b] rounded-lg p-6 sm:p-8 transition-all hover:bg-white shadow-xs">
+                <motion.div
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="bg-[#f7faf8] border border-[#dbe5df] group-hover:border-[#205c3b] rounded-lg p-6 sm:p-8 transition-all hover:bg-white shadow-xs hover:shadow-md cursor-default"
+                >
                   {/* Top Meta: Dates & Current badge */}
                   <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#e2ebe5]">
                     <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-[#143d2b]">
@@ -57,7 +79,7 @@ export const ExperienceSection: React.FC = () => {
 
                     <div className="flex items-center gap-2">
                       {exp.isCurrent && (
-                        <span className="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white bg-[#143d2b] rounded-full">
+                        <span className="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white bg-[#143d2b] rounded-full shadow-2xs">
                           Present Role
                         </span>
                       )}
@@ -70,7 +92,7 @@ export const ExperienceSection: React.FC = () => {
 
                   {/* Role & Company */}
                   <div className="mt-4">
-                    <h3 className="text-xl sm:text-2xl font-bold text-[#143d2b] leading-snug">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#143d2b] leading-snug group-hover:text-[#205c3b] transition-colors">
                       {exp.role}
                     </h3>
                     <div className="mt-1 flex items-center gap-2 text-base font-semibold text-[#205c3b]">
@@ -95,16 +117,22 @@ export const ExperienceSection: React.FC = () => {
                       ))}
                     </ul>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Summary note */}
-        <div className="mt-12 text-center text-xs text-[#63756b] border-t border-[#e2ebe5] pt-6">
+        <motion.div
+          className="mt-12 text-center text-xs text-[#63756b] border-t border-[#e2ebe5] pt-6"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <span>Continuous track record in Qatar logistics from 2009 to Present. Validated directly from candidate CV.</span>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

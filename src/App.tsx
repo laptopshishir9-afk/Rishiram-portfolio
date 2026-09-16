@@ -10,16 +10,39 @@ import { Footer } from './components/Footer';
 import { CvModal } from './components/CvModal';
 import { cvData } from './data/cvData';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import defaultProfilePhoto from './assets/images/profile.jpg';
 
 export default function App() {
   const [isCvModalOpen, setIsCvModalOpen] = useState(false);
-  const [photoUrl] = useState<string | null>(() => {
+  const [photoUrl, setPhotoUrl] = useState<string>(() => {
     try {
-      return localStorage.getItem('rishiram_profile_photo');
+      const stored = localStorage.getItem('rishiram_custom_uploaded_photo');
+      if (stored) return stored;
     } catch {
-      return null;
+      // ignore
     }
+    return defaultProfilePhoto;
   });
+
+  const handlePhotoChange = (newPhoto: string) => {
+    setPhotoUrl(newPhoto);
+    try {
+      localStorage.setItem('rishiram_custom_uploaded_photo', newPhoto);
+    } catch {
+      // storage unavailable
+    }
+  };
+
+  const handleResetPhoto = () => {
+    setPhotoUrl(defaultProfilePhoto);
+    try {
+      localStorage.removeItem('rishiram_custom_uploaded_photo');
+    } catch {
+      // ignore
+    }
+  };
+
+  const isCustomPhoto = photoUrl !== defaultProfilePhoto;
 
   return (
     <div className="min-h-screen bg-[#f7faf8] text-[#1e2420] flex flex-col font-sans selection:bg-[#143d2b] selection:text-white">
@@ -31,6 +54,9 @@ export default function App() {
           <HeroSection
             onOpenCvModal={() => setIsCvModalOpen(true)}
             photoUrl={photoUrl}
+            onPhotoChange={handlePhotoChange}
+            onResetPhoto={handleResetPhoto}
+            isCustomPhoto={isCustomPhoto}
           />
           <ProfileSection />
           <SkillsSection />
@@ -69,6 +95,14 @@ export default function App() {
                 <img
                   src={photoUrl}
                   alt={cvData.name}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.dataset.fallbackTried) {
+                      target.dataset.fallbackTried = 'true';
+                      target.src = './profile.jpg';
+                    }
+                  }}
                   className="w-full h-full object-cover rounded-[50%]"
                 />
               </div>

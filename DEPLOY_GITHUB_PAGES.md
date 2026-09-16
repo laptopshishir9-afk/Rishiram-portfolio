@@ -42,3 +42,6 @@ If you prefer deploying directly from your computer using Git:
 - `.nojekyll`: Prevents GitHub's Jekyll engine from ignoring files starting with underscores or asset folders.
 - `public/404.html`: Ensures page refreshes and direct links do not return a 404 error.
 - `.github/workflows/deploy.yml`: Handles automatic building with Node 20 and publishing to GitHub Pages on every push.
+- **Profile Photo Bundled**: A high-resolution professional warehouse supervisor portrait is now bundled directly into the project (`public/profile.jpg`, `src/assets/images/profile.jpg`). It automatically appears on GitHub Pages without requiring manual uploads!
+- **Interactive Photo Upload**: Visitors can click "Upload Your Photo" / "Replace Photo" directly on the website to test their personal photo, or you can permanently replace `public/profile.jpg` with your own image file in your repository.
+
